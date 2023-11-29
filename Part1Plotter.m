@@ -16,7 +16,7 @@ parameters.f = 0;            %Source term
 Xmin = 0;   %lower spatial boundary
 Xmax = 1;   %upper spatial boundary
 Ne = 10;    %number of elements
-order = 1;  %Selects linear basis functions
+order = 1;  %Selects linear(1) or quadratic(2) basis functions
 theta = 1;  %0:Forward Euler, 1:Backward Euler, 0.5:Crank-Nicolson
 Xpoints = Xmin:0.01:Xmax; %vector with all the needed x points
 
@@ -59,6 +59,9 @@ for i = 1:length(tpoints)
     legend('Location','NorthWest','FontSize',10)
 
 end
+% save plot as picture
+saveas(gcf,'Part1numerical','png')
+
 %second figure for analytical vs numerical comparison
 figure('Name', 'Part1analytical')
 %Defines line colours using MATLAB RGB triplet
@@ -85,7 +88,8 @@ for i = 1:length(tpoints)
     ylabel('Concentration c(x,t)','FontSize',12)
     legend('Location','NorthWest','FontSize',10)
 end
-
+% save plot as picture
+saveas(gcf,'Part1analytical','png')
 
 %------- Graphs for 1.2 --------------------------------------------------%
 %figure for analytical vs numerical comparison @ x = 0.8
@@ -103,3 +107,31 @@ grid on %use grid lines
 xlabel('Time t (s)','FontSize',12)
 ylabel('Concentration c(0.8,t)','FontSize',12)
 legend('Location','SouthEast','FontSize',10)
+% save plot as picture
+saveas(gcf,'Part1analytical@08','png')
+
+%------- Backward Euler vs Crank-Nicolson --------------------------------%
+%
+figure('Name','Crank-Nicolson and Backward at x = 0.8')
+
+
+for theta = [0.5 1]
+    %get numerical solution for given theta
+    [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+    
+    findplace = mesh.nvec == 0.8;
+    plot(time.t,Cnum(findplace,:),'-x','DisplayName',strcat('Numerical Solution Theta = ',num2str(theta)),'LineWidth',1.3);
+    hold on
+end
+
+%Plots numerical solution at x = 0.8 for the established time interval
+Canalytical = TransientAnalyticSoln(0.8,time.t);
+plot(time.t,Canalytical,'DisplayName','Analytical Solution','LineWidth',1.3);
+
+grid on %use grid lines
+xlabel('Time t (s)','FontSize',12)
+ylabel('Concentration c(0.8,t)','FontSize',12)
+legend('Location','SouthEast','FontSize',10)
+xlim([0,0.3])
+% save plot as picture
+saveas(gcf,'Crank-Nicolson_vs_Backward','png')
