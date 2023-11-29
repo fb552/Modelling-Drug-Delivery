@@ -1,16 +1,18 @@
 function [GMmass] = GlobalMassMatrix(Ne,mesh,GQ,order)
-%This function uses a FOR loop over all elements in the finite element mesh
-%to calculate the local element mass matrices. Lastly, it places the local
-%element matrices in the correct location in the global mass matrix.
+%Assembles the single local mass elements into a global matrix
+% The local mass elements are computed at each element in the finite
+% element mesh. Based on their location they are then inserted in the 
+% global mass matrix of size mesh.ngn-by-mesh.ngn. 
 %
-%Input arguments:
-%Ne - Number of elements
-%mesh – Finite element mesh
-%GQ - Switch between manual integration and Gaussian quadrature rule
-%order - Switch between linear and quadratic basis functions
+% Input:
+%  Ne : Number of elements
+%  mesh : Finite element mesh
+%  GQ : Gaussian Quadrature parameters
+%  order : weather the basis functions is linear or quadratic
+% Return:
+%  GMmass : Global Mass matrix
 %
-%Return arguments:
-%GlobalMassMatrix - Global Mass matrix
+%Francesco Berteau (fb552) - November 2023
 
     %initialize global mass matrix with zeros
     GMmass = zeros(mesh.ngn);

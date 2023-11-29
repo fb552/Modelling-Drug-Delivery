@@ -86,8 +86,3 @@ function [mesh] = OneDimLinearMeshGen(xmin,xmax,Ne,order,parameters)
         end
     end
 end
-
-
-    
-            
-        

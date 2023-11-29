@@ -1,23 +1,24 @@
-function [mesh,c,GQ,time,GM] = TransientFEM(boundary,Xmin,Xmax,Ne,GQ,order,theta,time,parameters)
-%This function solves the full transient form of the diffusion reaction
-%equation.
+function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters)
+%Solves the full transient form of the diffusion reaction equation.
 %
-%Input arguments:
-%Boundary - Data structure containing all the boundary conditions
-%xmin - Lower spatial boundary position
-%xmax - Upper spatial boundary position
-%Ne - Number of elements
-%GQ - Switch between manual integration and Gaussian quadrature rule
-%order - Switch between linear and quadratic basis functions
-%theta - Selection of numerical scheme
-%time - Data structure containing all the time-related data
-%matparameters - Selection of material parameters
+% Input:
+%  xmin : Lower spatial boundary
+%  xmax : Upper spatial boundary
+%  Ne : Number of elements
+%  order : weather the basis functions is linear or quadratic
+%  theta : Method selection
+%  time : All time related values combined
+%  GQ : Gaussian Quadrature parameters
+%  boundary : Dirichlet and Neumann conditions combined
+%  parameters : Parameters for current material
+% Return:
+%  c - Solution to the full transient FEM
+%  mesh - Finite element mesh
+%  GQ : Gaussian Quadrature parameters
+%  time - All time related values combined
+%  GM - Total Global Matrix with Dirichlet boundary conditions
 %
-%Return arguments:
-%mesh - Finite element mesh
-%c - Numerical solution of the problem
-%time - Time interval
-%GM - Final Global Matrix with Dirichlet boundary conditions
+%Francesco Berteau (fb552) - November 2023
 
     %finite element mesh between Xmin and Xmax with Ne number of elements
     mesh = OneDimLinearMeshGen(Xmin,Xmax,Ne,order,parameters);
@@ -42,7 +43,7 @@ function [mesh,c,GQ,time,GM] = TransientFEM(boundary,Xmin,Xmax,Ne,GQ,order,theta
     %initialise list of vector c with zeros 
     c = zeros(mesh.ngn,length(time.t));
     %insert given time value at t = 0
-    c(:,1) = time.IC;
+    c(:,1) = time.ic;
 
     %get global source vector
     [GVsource] = GlobalSourceVector(Ne,mesh,GQ,order);
@@ -57,7 +58,7 @@ function [mesh,c,GQ,time,GM] = TransientFEM(boundary,Xmin,Xmax,Ne,GQ,order,theta
         RHS = (prevGM*c(:,n)) + dt*theta*(GVsource+NBnext) + dt*(1-theta)*(GVsource + NB);
         
         %Dirichlet boundary conditionsfor RHS and GM
-        [RHS,GM] = DirichletBoundary(boundary,mesh,GM,RHS);
+        [RHS,GM] = DirichletBoundary(boundary,RHS,GM);
         
         %next numerical according to equation
         c(:,n+1) = GM\RHS;

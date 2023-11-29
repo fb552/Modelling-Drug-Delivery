@@ -1,7 +1,16 @@
 function [DiffusionMatrix] = LEMdiffusion(eN,mesh,GQ,order)
-% This function calculates the Local 2-by-2 Element Matrix for the linear
-% diffusion operator, for any element, eN, in the finite element mesh.
-% The diffusion coefficient D and the mesh.
+%Calculates the Local m-by-n Element Matrix for the linear diffusion operator
+% This is done for any element eN in the finite element mesh.
+%
+% Input:
+%  eN : Element number
+%  mesh : Finite element mesh
+%  GQ : Gaussian Quadrature parameters
+%  order : weather the basis functions is linear or quadratic
+% Return:
+%  DiffusionMatrix : Local diffusion matrix
+%
+%Francesco Berteau (fb552) - November 2023
     
     %Jacobian for a given element
     J = mesh.elem(eN).J;
@@ -13,18 +22,18 @@ function [DiffusionMatrix] = LEMdiffusion(eN,mesh,GQ,order)
     D = mesh.elem(eN).D;
      
     %if manual integration
-    if GQ.Switch == '0'
+    if GQ.switch == '0'
         %elements of local element matrix 2J = (x1-x0)
         Int00 = D/(2*J);
         %local 2x2 Element Matrix for diffusion
         DiffusionMatrix = [Int00 -Int00 ; -Int00 Int00];
     
     %if Gaussian Quadrature
-    elseif GQ.Switch == '1'
+    elseif GQ.switch == '1'
         %order of solver
         N = GQ.N; 
         %get Gaussian points and weights
-        [GQ] = GaussianQuadrature(GQ);
+        [GQ] = GQscheme(GQ);
 
         for i = 1:N
             w = GQ.gw(i);          %Gauss weights

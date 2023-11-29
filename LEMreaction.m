@@ -1,7 +1,16 @@
 function [ReactionMatrix] = LEMreaction(eN,mesh,GQ,order)
-% This function calculates the Local 2-by-2 Element Matrix for the linear
-% reaction operator, for any element, eN, in the finite element mesh.
-% The reaction coefficient lambda and the mesh.
+%Calculates the Local m-by-n Element Matrix for the linear reaction operator
+% This is done for any element eN in the finite element mesh.
+%
+% Input:
+%  eN : Element number
+%  mesh : Finite element mesh
+%  GQ : Gaussian Quadrature parameters
+%  order : weather the basis functions is linear or quadratic
+% Return:
+%  ReactionMatrix : Local reaction matrix
+%
+%Francesco Berteau (fb552) - November 2023
     
     %Jacobian of given element
     J = mesh.elem(eN).J;
@@ -13,18 +22,18 @@ function [ReactionMatrix] = LEMreaction(eN,mesh,GQ,order)
     lambda = mesh.elem(eN).lambda;
     
     %if manual integration
-    if GQ.Switch == '0'
+    if GQ.switch == '0'
         %elements of local element matrix
         Int00 = 2*(lambda*J)/3;
         %local 2x2 Element Matrix for reaction
         ReactionMatrix = [Int00 Int00/2 ; Int00/2 Int00];
 
     %if gaussian quadrature
-    elseif GQ.Switch == '1'
+    elseif GQ.switch == '1'
         %order of solver
         N = GQ.N; 
         %get Gaussian points and weights
-        [GQ] = GaussianQuadrature(GQ);
+        [GQ] = GQscheme(GQ);
 
         for i = 1:N
             w = GQ.gw(i);          %Gauss weights

@@ -1,15 +1,17 @@
 function [psi, dpsidxigrad] = EvalBasis(order,xipts)
-%This function evaluates the basis functions implemented in the model.
-%Basis functions are evaluated by calculating their values and gradients
-%for a given local node (lnid) at a xipts.
+%Evaluates the basis functions used in the model
+% The basis functions are evaluated by calculating their values and gradients
+% for a given local node (lnid) at a xipts.
 %
-%Input arguments:
-%order - Switch between linear and quadratic basis functions
-%xipts - Coordinate x between [-1,1]
+% Input:
+%  order : weather the basis functions is linear or quadratic
+%  xipts : x points between [-1,1]
+% Return:
+%  psi : the value of the basis function
+%  nvecnext : the gradient of the basis function
 %
-%Return arguments:
-%psi - Value of the basis function
-%nvecnext - Gradient of the basis function
+%Francesco Berteau (fb552) - November 2023
+    
     %initialise psi as zeros array, with size order + 1
     psi = zeros(order+1,1);
     dpsidxigrad = zeros(order+1,1);

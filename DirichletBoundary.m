@@ -1,18 +1,17 @@
 function [RHS,GlobalMatrix] = DirichletBoundary(boundary,RHS,GlobalMatrix)
-%Applies Dirichlet Boundary Conditions to transient diffusion equation
+%Applies Dirichlet Boundary Conditions to transient diffusion equation.
 % Sets the global matrix rows corresponding to boundary nodes to zero and
 % the RHS vector to the boundaries values.
 %
 % Input:
-% Boundary : Data structure containing all the boundary conditions
-% RHS - RHS vector
-% GlobalMatrix : Global Matrix
-%
+%  Boundary : Data structure containing all the boundary conditions
+%  RHS : RHS vector
+%  GlobalMatrix : Global Matrix
 % Return:
-% RHS : RHS vector with DBC applied
-% GlobalMatrix : Global Matrix with DBC applied
+%  RHS : RHS vector with DBC applied
+%  GlobalMatrix : Global Matrix with DBC applied
 %
-% Francesco Berteau (fb552) - November 2023
+%Francesco Berteau (fb552) - November 2023
     
     %upper Dirichlet BC
     GlobalMatrix(end, :) = 0;

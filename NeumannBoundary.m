@@ -1,15 +1,16 @@
 function [NB,NBnext] = NeumannBoundary(boundary,mesh)
-%This function modifies the Neumann Boundary conditions vector according to
-%the values of Boundary.NeumannL and Boundary.NeumannR stored in the data
-%structure Boundary.
+%Computes the Neumann Boundary Conditions
+% This is done according to the lower and upper boundary values contained
+% within boundary
 %
-%Input arguments:
-%Boundary - Data structure containing all the boundary conditions
-%mesh - Finite element mesh
+% Input:
+%  Boundary : Data structure containing all the boundary conditions
+%  mesh : Finite element mesh
+% Return:
+%  NB : current Neumann boundary conditions vector
+%  NBnext : next Neumann boundary conditions vector
 %
-%Return arguments:
-%NBc - Current time point Neumann boundary conditions vector
-%NBcnext - Next time point Neumann boundary conditions vector
+%Francesco Berteau (fb552) - November 2023
 
     %initialise boundary conditions vector with zeros
     NB = zeros(mesh.ngn,1);
@@ -18,9 +19,9 @@ function [NB,NBnext] = NeumannBoundary(boundary,mesh)
     if isnumeric(boundary.NeumannL)
         %lower Neumann BC
         NB(1) = -boundary.NeumannL;
-    elseif isnumeric(boundary.NeumannR)
+    elseif isnumeric(boundary.NeumannU)
         %upper Neumann BC
-        NB(mesh.ngn) = boundary.NeumannR;
+        NB(mesh.ngn) = boundary.NeumannU;
     end
     %store the next BC
     NBnext = NB;
