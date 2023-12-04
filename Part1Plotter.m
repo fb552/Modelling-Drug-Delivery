@@ -111,9 +111,8 @@ legend('Location','SouthEast','FontSize',10)
 saveas(gcf,'TransientFEM-analytical@08','png')
 
 %------- Backward Euler vs Crank-Nicolson --------------------------------%
-%
+%figure for different theta scheme comparison @ x = 0.8
 figure('Name','Crank-Nicolson, Backward and Forward @ x = 0.8')
-
 
 for theta = [0 0.5 1]
     %get numerical solution for given theta
@@ -137,3 +136,33 @@ ylim([0,0.8])
 xlim([0,0.2])
 % save plot as picture
 saveas(gcf,'Crank-Nicolson_vs_Euler','png')
+
+%------- Linear vs Quadratic basis function ------------------------------%
+%figure for different basis function order
+figure('Name','Basis function order')
+
+Canalytical = zeros(length(Xpoints),1);
+for m = 1:length(Xpoints)
+    %Calculates analytical solution
+    Canalytical(m,1) = TransientAnalyticSoln(Xpoints(m),0.05);
+end
+%plot analytical solution against x
+plot(Xpoints, Canalytical(:,1),'DisplayName','Analytical Solution','LineWidth',1.3);
+hold on
+
+for order = [1 2]
+    [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+    %plot c(x) against x
+    findplace = time.t == 0.05;
+    plot(mesh.nvec,Cnum(:,findplace),'-x','DisplayName',(strcat('Numerical Solution order=',num2str(order))),'LineWidth',1.3);
+    hold on
+end
+
+grid on %use grid lines
+title('Basis Function order','FontSize',14)
+xlabel('Spatial distance x','FontSize',12)
+ylabel('Concentration c(x,0.05)','FontSize',12)
+legend('Location','NorthWest','FontSize',10)
+xlim([0.4,0.8])
+% save plot as picture
+saveas(gcf,'BasisFunctionOrder','png')
