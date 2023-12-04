@@ -1,5 +1,6 @@
 function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters)
 %Solves the full transient form of the diffusion reaction equation.
+% [M + θΔtK]cn+1 = [M  (1 - θ)ΔtK]cn + Δtθ[Fn+1 + NBcn+1] + Δt(1 - θ)[Fn + NBcn]
 %
 % Input:
 %  xmin : Lower spatial boundary
@@ -42,7 +43,7 @@ function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,bou
 
     %initialise list of vector c with zeros 
     c = zeros(mesh.ngn,length(time.t));
-    %insert given time value at t = 0
+    %initial condition c(x,0)=initial condition
     c(:,1) = time.ic;
 
     %get global source vector
@@ -51,7 +52,7 @@ function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,bou
     %Neumann boundary conditions, current and following
     [NB,NBnext] = NeumannBoundary(boundary,mesh);
 
-    %compute RHS therefore c at each time point
+    %compute RHS hence c at each time point
     for n = 1:time.N
     
         %RHS vector of equation
