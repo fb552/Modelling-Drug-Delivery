@@ -30,7 +30,7 @@ time.N = (time.tmax-time.tmin)/time.dt; %number of time steps
 tpoints = [0.05 0.1 0.3 1.0];   %given time points
 
 GQ.switch = '1';    %Gaussian Quadrature yes or no
-GQ.N = 2;           %order of solver
+GQ.npts = 2;        %number of gauss points (2N-1)
 [GQ] = GQscheme(GQ);%create Gaussian Quadrature
 
 % All boundaries combined

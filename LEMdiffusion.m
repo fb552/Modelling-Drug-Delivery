@@ -30,8 +30,8 @@ function [DiffusionMatrix] = LEMdiffusion(eN,mesh,GQ,order)
     
     %if Gaussian Quadrature
     elseif GQ.switch == '1'
-        %order of solver
-        N = GQ.N; 
+        %number of gauss points
+        N = GQ.npts; 
         %get Gaussian points and weights
         [GQ] = GQscheme(GQ);
 

@@ -28,8 +28,8 @@ function [LMmass] = LocalMassElem(eN,mesh,GQ,order)
     
     %if gaussian quadrature
     elseif GQ.switch == '1'
-        %order of solver
-        N = GQ.N; 
+        %number of gauss points
+        N = GQ.npts; 
         %get Gaussian points and weights
         [GQ] = GQscheme(GQ);
         

@@ -12,7 +12,7 @@ function [gq] = GQscheme(gq)
 %Francesco Berteau (fb552) - November 2023
 
     %order of quadrature rule
-    N = gq.N;
+    N = gq.npts;
     
     if (N>0) && (N<6)
         %initialise zero array of size equal gauss quadrature order
