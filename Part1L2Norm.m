@@ -27,7 +27,7 @@ time.N = (time.tmax-time.tmin)/time.dt; %number of time steps
 tpoints = [0.05 0.1 0.3 1.0];   %given time points
 
 GQ.switch = '1';    %Gaussian Quadrature yes or no
-GQ.N = 3;           %order of solver
+GQ.npts = 3;        %number of gauss points (2N-1)
 [GQ] = GQscheme(GQ);%create Gaussian Quadrature
 
 % All boundaries combined
@@ -54,18 +54,18 @@ for order = [1 2]
             switch theta
                 case 0.5
                     %plot L2 Norm error against characteristic lenght using log-log plot
-                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','--','LineWidth',1.3,'color',linecolor{i});
+                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','-.','LineWidth',1.3,'color',linecolor{i});
                 case 1
                     %plot L2 Norm error against characteristic lenght using log-log plot
-                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineWidth',1.3,'color',linecolor{i});
+                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','--','LineWidth',1.3,'color',linecolor{i});
             end
             hold on
         end
     end
     grid on %use grid lines
-    title(strcat('L2 Norm test with basis order=',num2str(order)),'FontSize',14)
-    xlabel('log(h)','FontSize',12);
-    ylabel('log(L2 Norm)','FontSize',12);
+    title(strcat('L2 Norm with basis order=',num2str(order)),'FontSize',14)
+    xlabel('ln(h)','FontSize',12);
+    ylabel('ln(E)','FontSize',12);
     legend('Location','SouthEast','FontSize',10,'NumColumns',2)
     % save plot as picture
     saveas(gcf,strcat('L2Norm_order=',num2str(order)),'png')
@@ -85,9 +85,9 @@ for j = [0 1]
         [L2N, h, gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters);
         %two line colours
         if theta == 0.5
-            linecolor = [0.00 0.45 0.74];
+            linecolor = [0.00 0.45 0.75];
         elseif theta == 1
-            linecolor = [0.85 0.33 0.10];
+            linecolor = [0.85 0.35 0.10];
         end
         %manual or gaussian quadrature
         switch j
@@ -96,16 +96,16 @@ for j = [0 1]
                 loglog(h,L2N,'LineWidth',1.3,'color',linecolor);
             case 1
                 %plot L2 Norm error against characteristic lenght using log-log plot
-                loglog(h,L2N,'-x','LineWidth',1.3,'color',linecolor);
+                loglog(h,L2N,'--','LineWidth',1.3,'color',linecolor);
         end
         hold on
     end
 end
 grid on %use grid lines
 title('Numerical Methods Convergence','FontSize',14)
-xlabel('log(h)','FontSize',12);
-ylabel('log(L2 Norm)','FontSize',12)
-legend('Crank-Nicolson (Manual)','Backward Euler (Manual)',...
-'Crank-Nicolson (GQ Scheme)','Backward Euler (GQ Scheme)','Location','SouthEast','FontSize',10)
+xlabel('ln(h)','FontSize',12);
+ylabel('ln(E)','FontSize',12)
+legend('Crank-Nicolson (Manual Integration)','Backward Euler (Manual Integration)',...
+'Crank-Nicolson (Gaussian Quadrature)','Backward Euler (Gaussian Quadrature)','Location','SouthEast','FontSize',10)
 % save plot as picture
 saveas(gcf,'NumericalMethodsConvergence','png')

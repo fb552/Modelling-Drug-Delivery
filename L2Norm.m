@@ -21,8 +21,8 @@ function [L2Norm,h,gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,bou
 %
 %Francesco Berteau (fb552) - November 2023
 
-    %Defines the order of the quadrature rule
-    N = GQ.N;
+    %number of gauss points
+    N = GQ.npts;
     %preallocations for fast processing
     h = zeros(1,length(elements));
     L2Norm = zeros(1,length(elements));
