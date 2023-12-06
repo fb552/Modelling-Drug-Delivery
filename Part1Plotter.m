@@ -5,7 +5,7 @@
 %Francesco Berteau (fb552) - November 2023
 close all
 
-%------- Imput parameters ------------------------------------------------%
+%% ------- Imput parameters ----------------------------------------------%
 
 % Parameters of current material
 parameters.selection = '1';  %material for Part 1
@@ -43,7 +43,7 @@ boundary.NeumannU = 'Na';   %Upper Neumann Boundary Condition
 [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
 
 
-%------- Graphs for 1.1 --------------------------------------------------%
+%% ------- Graphs for 1.1 ------------------------------------------------%
 %first figure for computed solution alone
 figure('Name','Part1 numerical')
 for i = 1:length(tpoints)
@@ -64,7 +64,7 @@ saveas(gcf,'TransientFEM','png')
 %second figure for analytical vs numerical comparison
 figure('Name', 'Part1 analytical')
 %Defines line colours using MATLAB RGB triplet
-linecolor = {[0.00 0.45 0.74],[0.85 0.33 0.10], [0.93 0.69 0.13], [0.49 0.18 0.56]};
+colours = {[0.00 0.45 0.74],[0.85 0.33 0.10], [0.93 0.69 0.13], [0.49 0.18 0.56]};
 Canalytical = zeros(length(Xpoints),length(tpoints));
 
 for i = 1:length(tpoints)
@@ -74,12 +74,12 @@ for i = 1:length(tpoints)
     end
 
     %plot analytical solution against x
-    plot(Xpoints, Canalytical(:,i),'DisplayName',strcat('Analytical Solution @ t=',num2str(tpoints(i))),'LineStyle','--','LineWidth',1.3,'color', linecolor{i});
+    plot(Xpoints, Canalytical(:,i),'DisplayName',strcat('Analytical Solution @ t=',num2str(tpoints(i))),'LineStyle','--','LineWidth',1.3,'color', colours{i});
     hold on
 
     %plot c(x) against x
     findplace = time.t == tpoints(i);
-    plot(mesh.nvec,Cnum(:,findplace),'DisplayName',(strcat('Numerical Solution @ t=',num2str(tpoints(i)))),'LineWidth',1.3,'color',linecolor{i});
+    plot(mesh.nvec,Cnum(:,findplace),'DisplayName',(strcat('Numerical Solution @ t=',num2str(tpoints(i)))),'LineWidth',1.3,'color',colours{i});
     hold on
 end
 grid on %use grid lines
@@ -90,7 +90,7 @@ legend('Location','NorthWest','FontSize',10)
 % save plot as picture
 saveas(gcf,'TransientFEM-analytical','png')
 
-%------- Graphs for 1.2 --------------------------------------------------%
+%% ------- Graphs for 1.2 ------------------------------------------------%
 %figure for analytical vs numerical comparison @ x = 0.8
 figure('Name','Part1 analytical @ 0.8')
 
@@ -110,7 +110,7 @@ legend('Location','SouthEast','FontSize',10)
 % save plot as picture
 saveas(gcf,'TransientFEM-analytical@08','png')
 
-%------- Backward Euler vs Crank-Nicolson --------------------------------%
+%% ------- Backward Euler vs Crank-Nicolson ------------------------------%
 %figure for different theta scheme comparison @ x = 0.8
 figure('Name','Crank-Nicolson, Backward and Forward @ x = 0.8')
 
@@ -137,7 +137,7 @@ xlim([0,0.2])
 % save plot as picture
 saveas(gcf,'Crank-Nicolson_vs_Euler','png')
 
-%------- Linear vs Quadratic basis function ------------------------------%
+%% ------- Linear vs Quadratic basis function ----------------------------%
 %figure for different basis function order
 figure('Name','Basis function order')
 
