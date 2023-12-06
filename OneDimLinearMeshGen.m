@@ -38,51 +38,44 @@ function [mesh] = OneDimLinearMeshGen(xmin,xmax,Ne,order,parameters)
         %check weather using material 1 or 2
         if parameters.selection == '1'
 
-            %diffusion coefficient for each element
+            %diffusion coefficient of current element
             mesh.elem(i).D = parameters.D;
-
-            %reaction coefficient for each element
+            %reaction coefficient of current element
             mesh.elem(i).lambda = parameters.lambda;
-
-            %source term for each element
+            %source term of current element
             mesh.elem(i).f = parameters.f;
 
         elseif parameters.selection == '2'
-            %human sking parameters
-            mesh.elem(i).rho = parameters.rho;  %tissue density
-            mesh.elem(i).c = parameters.c;      %tissue specific heat capacity
-            mesh.elem(i).G = parameters.G;      %blood flow
-            mesh.elem(i).Tb = parameters.Tb;    %blood temperature
-            mesh.elem(i).rhob = parameters.rhob;%blood density
-            mesh.elem(i).cb = parameters.cb;    %blood Specific heat capacity
+            %position on the mesh of current element
+            position = mesh.elem(i).x(1);    
 
-            Xparameters = mesh.elem(i).x(1);    %x-position of element
+            % Set parameters values based on current position
+            %epidermis layer
+            if(position >= 0 && position < parameters.Xe)
+                %diffusion coefficient and no blood flow
+                mesh.elem(i).D = parameters.De;
+                mesh.elem(i).beta = parameters.betaE;
+                mesh.elem(i).gamma = parameters.gammaE;
 
-            %within epidermis layer
-            if(Xparameters >= 0 && Xparameters < parameters.xEpidermis)
-                %set thermal conductivity and assume no blood flow
-                mesh.elem(i).k = parameters.kEpidermis;
-                mesh.elem(i).G = 0;
+            %dermis layer
+            elseif (position >= parameters.Xe && position < parameters.Xd)
+                %diffusion coefficient
+                mesh.elem(i).D = parameters.Dd;
+                mesh.elem(i).beta = parameters.betaD;
+                mesh.elem(i).gamma = parameters.gammaD;
 
-            %within dermis layer
-            elseif (Xparameters >= parameters.xEpidermis && Xparameters <= parameters.xDermis)
-                %set thermal conductivity
-                mesh.elem(i).k = parameters.kDermis; 
-
-            %within subcutaneous layer
-            elseif (Xparameters > parameters.xDermis && Xparameters <= parameters.xBody)
-                %set thermal conductivity
-                mesh.elem(i).k = parameters.ksubcut; 
+            %sub-cutaneous layer
+            elseif (position >= parameters.Xd && position <= parameters.Xb)
+                %diffusion coefficient
+                mesh.elem(i).D = parameters.Db;
+                mesh.elem(i).beta = parameters.betaB;
+                mesh.elem(i).gamma = parameters.gammaB;
             end
 
-            %diffusion coefficient with set parameters
-            mesh.elem(i).D = (mesh.elem(i).k)/((mesh.elem(i).rho * mesh.elem(i).c));
-
-            %reaction coefficient with set parameters
-            mesh.elem(i).lambda = -((mesh.elem(i).G * mesh.elem(i).rhob * mesh.elem(i).cb)/(mesh.elem(i).rho * mesh.elem(i).c));
-            
-            %source term with set parameters
-            mesh.elem(i).f = ((mesh.elem(i).G * mesh.elem(i).rhob * mesh.elem(i).cb * mesh.elem(i).Tb)/(mesh.elem(i).rho * mesh.elem(i).c));
+            %sum of the reaction terms
+            mesh.elem(i).lambda = -(mesh.elem(i).beta + mesh.elem(i).gamma);
+            %no source term
+            mesh.elem(i).f = 0;
         end
     end
 end
