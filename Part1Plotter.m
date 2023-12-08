@@ -49,8 +49,8 @@ figure('Name','Part1 numerical')
 for i = 1:length(tpoints)
 
     %Plot c(x) against x
-    findplace = time.t == tpoints(i);
-    plot(mesh.nvec,Cnum(:,findplace),'DisplayName',(strcat('t=',num2str(tpoints(i)))),'LineWidth',1.3);
+    element = time.t == tpoints(i);
+    plot(mesh.nvec,Cnum(:,element),'DisplayName',(strcat('t=',num2str(tpoints(i)))),'LineWidth',1.3);
     hold on
 end
 grid on %use grid lines
@@ -78,8 +78,8 @@ for i = 1:length(tpoints)
     hold on
 
     %plot c(x) against x
-    findplace = time.t == tpoints(i);
-    plot(mesh.nvec,Cnum(:,findplace),'DisplayName',(strcat('Numerical Solution @ t=',num2str(tpoints(i)))),'LineWidth',1.3,'color',colours{i});
+    element = time.t == tpoints(i);
+    plot(mesh.nvec,Cnum(:,element),'DisplayName',(strcat('Numerical Solution @ t=',num2str(tpoints(i)))),'LineWidth',1.3,'color',colours{i});
     hold on
 end
 grid on %use grid lines
@@ -94,8 +94,8 @@ saveas(gcf,'TransientFEM-analytical','png')
 %figure for analytical vs numerical comparison @ x = 0.8
 figure('Name','Part1 analytical @ 0.8')
 
-findplace = mesh.nvec == 0.8;
-plot(time.t,Cnum(findplace,:),'DisplayName','Numerical Solution @ x=0.8','LineWidth',1.3);
+element = mesh.nvec == 0.8;
+plot(time.t,Cnum(element,:),'DisplayName','Numerical Solution @ x=0.8','LineWidth',1.3);
 hold on
 
 Canalytical = TransientAnalyticSoln(0.8,time.t);
@@ -118,8 +118,8 @@ for theta = [0 0.5 1]
     %get numerical solution for given theta
     [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
     
-    findplace = mesh.nvec == 0.8;
-    plot(time.t,Cnum(findplace,:),'-x','DisplayName',strcat('Numerical Solution θ=',num2str(theta)),'LineWidth',1.3);
+    element = mesh.nvec == 0.8;
+    plot(time.t,Cnum(element,:),'-x','DisplayName',strcat('Numerical Solution θ=',num2str(theta)),'LineWidth',1.3);
     hold on
 end
 
@@ -153,8 +153,8 @@ hold on
 for order = [1 2]
     [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
     %plot c(x) against x
-    findplace = time.t == 0.05;
-    plot(mesh.nvec,Cnum(:,findplace),'-x','DisplayName',(strcat('Numerical Solution order=',num2str(order))),'LineWidth',1.3);
+    element = time.t == 0.05;
+    plot(mesh.nvec,Cnum(:,element),'-x','DisplayName',(strcat('Numerical Solution order=',num2str(order))),'LineWidth',1.3);
     hold on
 end
 
