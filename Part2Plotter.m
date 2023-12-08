@@ -52,7 +52,7 @@ boundary.NeumannU = 'Na';   %Upper Neumann Boundary Condition
 colours = parula(length(tpoints));
 
 %Calculates numerical solution for the transient problem
-[c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+[c,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
 
 %% ------- Drug concentration --------------------------------------------%
 figure('Name', 'Concentration')
@@ -84,19 +84,18 @@ saveas(gcf,'DrugConcentration','png')
 %% ------- Drug effectiveness --------------------------------------------%
 figure('Name', 'Effectiveness')
 
-% concentration for effectiveness
+% concentration for effectiveness at given position
 ceff = 40;
+Xpos = 0.005;
 
+% increase boundary dose untill integral of c is less that 1000
 K = 0;
 while K < 1000
-    [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
-
-    element = round(order*0.005/(mesh.nvec(end)/mesh.ne));
-    position = find(c(element,:) > ceff,1,'first');
-    teff = time.t(position);
-
-    K = trapz(c(element,position:end))*time.dt;
-
+    [c,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+    
+    [K,teff,position,element] = MinEffectiveDose(mesh,time,order,c,Xpos,ceff);
+    
+    % increase dose applied to skin
     boundary.DirichletL = boundary.DirichletL + 1;
 end
 
@@ -144,3 +143,40 @@ legend('Location','NorthEast','FontSize',10,'NumColumns',2)
 ylim([0,75])
 % save plot as picture
 saveas(gcf,'EffectiveDrugConcentration','png')
+
+%% ------- Parameters influence ------------------------------------------%
+figure('Name', 'Parameters')
+
+for i = [1 2 3 4 5 6 7 8]
+    parameters = CombinationsDR(i,parameters);
+    boundary.DirichletL = 30;
+    % increase boundary dose untill integral of c is less that 1000
+    K = 0;
+    while K < 1000
+        [c,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+        
+        [K,teff,position,element] = MinEffectiveDose(mesh,time,order,c,Xpos,ceff);
+        
+        % increase dose applied to skin
+        boundary.DirichletL = boundary.DirichletL + 1;
+    end
+    
+    fprintf("Minimum initial dose: %d \n",boundary.DirichletL);
+    plot(time.t,c(element,:),'DisplayName',strcat('Solution for combination: ',num2str(i)),'LineWidth',1.3);
+    hold on
+    
+%     plot(teff,c(element,position),'ro', 'MarkerSize', 10,'DisplayName','Minimum effective dose')
+    % Add label with coordinates
+%     label = sprintf('[%.2f, %.1f]', teff, c(element,position));
+%     text(teff + 1, c(element,position) - 1, label, 'FontSize', 10);
+end
+
+yline(ceff,'--r','LineWidth',0.75,'DisplayName','Minimum effective dose')
+grid on %use grid lines
+title('Drug effectiveness at Dermis end','FontSize',14)
+xlabel('Time t (s)','FontSize',12);
+ylabel('Concentration c(0.005,t)','FontSize',12);
+legend('Location','SouthEast','FontSize',10)
+ylim([0,45])
+% save plot as picture
+saveas(gcf,'ParameterComparison','png')
