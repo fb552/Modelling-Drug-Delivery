@@ -1,4 +1,4 @@
-function [L2Norm,h,gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters)
+function [L2Norm,h] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters)
 %Computes the L2 Norm of the transient diffusion reaction equation.
 % The L2 Norm is the error between the numerical and the analytical
 % solution. This is done to test convergence of the TransientFEM calculator
@@ -17,7 +17,6 @@ function [L2Norm,h,gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,bou
 % Return:
 %  L2Norm : L2 Norm error
 %  h : Characteristic length
-%  gradient : Output line gradient
 %
 %Francesco Berteau (fb552) - November 2023
 
@@ -35,7 +34,7 @@ function [L2Norm,h,gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,bou
         %length for each element
         h(b) = ((Xmax-Xmin)/Ne);
         %solve transient FEM
-        [Cnum,mesh,GQ,time,~] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+        [Cnum,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
         %Returns the solution column at the selected time
         cnumerical = Cnum(:,time.t == time.range);
         for eN = 1:Ne

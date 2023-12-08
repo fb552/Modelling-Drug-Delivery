@@ -1,4 +1,4 @@
-function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters)
+function [c,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters)
 %Solves the full transient form of the diffusion reaction equation.
 % [M + θΔtK]cn+1 = [M  (1 - θ)ΔtK]cn + Δtθ[Fn+1 + NBcn+1] + Δt(1 - θ)[Fn + NBcn]
 %
@@ -17,7 +17,6 @@ function [c,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,bou
 %  mesh - Finite element mesh
 %  GQ : Gaussian Quadrature parameters
 %  time - All time related values combined
-%  GM - Total Global Matrix with Dirichlet boundary conditions
 %
 %Francesco Berteau (fb552) - November 2023
 

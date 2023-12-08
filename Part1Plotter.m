@@ -40,7 +40,7 @@ boundary.NeumannL = 'Na';   %Lower Neumann Boundary Condition
 boundary.NeumannU = 'Na';   %Upper Neumann Boundary Condition
 
 %get numerical solution for the transient FEM
-[Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+[Cnum,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
 
 
 %% ------- Graphs for 1.1 ------------------------------------------------%
@@ -116,7 +116,7 @@ figure('Name','Crank-Nicolson, Backward and Forward @ x = 0.8')
 
 for theta = [0 0.5 1]
     %get numerical solution for given theta
-    [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+    [Cnum,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
     
     element = mesh.nvec == 0.8;
     plot(time.t,Cnum(element,:),'-x','DisplayName',strcat('Numerical Solution θ=',num2str(theta)),'LineWidth',1.3);
@@ -151,7 +151,7 @@ plot(Xpoints, Canalytical(:,1),'DisplayName','Analytical Solution','LineWidth',1
 hold on
 
 for order = [1 2]
-    [Cnum,mesh,GQ,time,GM] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
+    [Cnum,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,boundary,parameters);
     %plot c(x) against x
     element = time.t == 0.05;
     plot(mesh.nvec,Cnum(:,element),'-x','DisplayName',(strcat('Numerical Solution order=',num2str(order))),'LineWidth',1.3);

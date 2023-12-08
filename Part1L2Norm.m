@@ -49,7 +49,7 @@ for order = [1 2]
         for i = 1:length(tpoints)
             %get L2 Norm error 
             time.range = tpoints(i);
-            [L2N, h, gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters);
+            [L2N, h] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters);
             %Crank-Nicolson or Backward Euler methods
             switch theta
                 case 0.5
@@ -82,7 +82,7 @@ for j = [0 1]
     %Crank-Nicolson or Backward Euler methods
     for theta = [0.5 1]
         %get L2 Norm error
-        [L2N, h, gradient] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters);
+        [L2N, h] = L2Norm(Xmin,Xmax,elements,order,theta,time,GQ,boundary,parameters);
         %two line colours
         if theta == 0.5
             linecolor = [0.00 0.45 0.75];
