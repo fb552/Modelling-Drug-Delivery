@@ -13,10 +13,10 @@ function [c,mesh,GQ,time] = TransientFEM(Xmin,Xmax,Ne,order,theta,time,GQ,bounda
 %  boundary : Dirichlet and Neumann conditions combined
 %  parameters : Parameters for current material
 % Return:
-%  c - Solution to the full transient FEM
-%  mesh - Finite element mesh
+%  c : Solution to the full transient FEM
+%  mesh : Finite element mesh
 %  GQ : Gaussian Quadrature parameters
-%  time - All time related values combined
+%  time : All time related values combined
 %
 %Francesco Berteau (fb552) - November 2023
 

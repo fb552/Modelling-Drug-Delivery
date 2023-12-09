@@ -161,19 +161,14 @@ for i = [1 2 3 4 5 6 7 8]
         boundary.DirichletL = boundary.DirichletL + 1;
     end
     
-    fprintf("Minimum initial dose: %d \n",boundary.DirichletL);
+    fprintf("Minimum initial dose: %d, with combination %d \n",boundary.DirichletL,i);
     plot(time.t,c(element,:),'DisplayName',strcat('Solution for combination: ',num2str(i)),'LineWidth',1.3);
     hold on
-    
-%     plot(teff,c(element,position),'ro', 'MarkerSize', 10,'DisplayName','Minimum effective dose')
-    % Add label with coordinates
-%     label = sprintf('[%.2f, %.1f]', teff, c(element,position));
-%     text(teff + 1, c(element,position) - 1, label, 'FontSize', 10);
 end
 
 yline(ceff,'--r','LineWidth',0.75,'DisplayName','Minimum effective dose')
 grid on %use grid lines
-title('Drug effectiveness at Dermis end','FontSize',14)
+title('Drug effectiveness with different combinations','FontSize',14)
 xlabel('Time t (s)','FontSize',12);
 ylabel('Concentration c(0.005,t)','FontSize',12);
 legend('Location','SouthEast','FontSize',10)
