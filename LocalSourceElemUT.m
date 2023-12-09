@@ -1,5 +1,5 @@
-%% Test 1: test symmetry of the matrix
-% % Test that this matrix is symmetric using manual integration
+%% Test 1: test symmetry of the vector
+% % Test that this vector is symmetric using manual integration
 tol = 1e-14;
 eN=1;
 parameters.selection = '1';
@@ -41,8 +41,8 @@ diff = elemat1 - elemat2;
 diffnorm = sum(sum(diff.*diff));
 assert(abs(diffnorm) <= tol)
 
-%% Test 3: test that one matrix is evaluted correctly
-% % Test that the element matrix is evaluated correctly using manual integration
+%% Test 3: test that one vector is evaluted correctly
+% % Test that the element vector is evaluated correctly using manual integration
 tol = 1e-14;
 eN=1;
 parameters.selection = '1';
@@ -62,8 +62,8 @@ diff = elemat1 - elemat2;  %calculate the difference between the two matrices
 diffnorm = sum(sum(diff.*diff)); %calculates the total squared error between the matrices
 assert(abs(diffnorm) <= tol)
 
-%% Test 4: test symmetry of the matrix
-% % Test that this matrix is symmetric using Gaussian Quadrature
+%% Test 4: test symmetry of the vector
+% % Test that this vector is symmetric using Gaussian Quadrature
 tol = 1e-14;
 eN=1;
 parameters.selection = '1';
@@ -105,8 +105,8 @@ diff = elemat1 - elemat2;
 diffnorm = sum(sum(diff.*diff));
 assert(abs(diffnorm) <= tol)
 
-%% Test 6: test that one matrix is evaluted correctly
-% % Test that the element matrix is evaluated correctly using Gaussian Quadrature
+%% Test 6: test that one vector is evaluted correctly
+% % Test that the element vector is evaluated correctly using Gaussian Quadrature
 tol = 1e-14;
 eN=1;
 parameters.selection = '1';
