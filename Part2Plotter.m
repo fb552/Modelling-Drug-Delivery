@@ -2,7 +2,7 @@
 % Various graphs are used to show the results and to do some analysis for
 % Part 2 of ME40064, Transient MATLAB-Based FEM Modelling, CourseWork.
 %
-%Francesco Berteau (fb552) - November 2023
+%Francesco Berteau (fb552) - December 2023
 close all
 
 %% ------- Imput parameters ----------------------------------------------%

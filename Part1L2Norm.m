@@ -54,14 +54,15 @@ for order = [1 2]
             switch theta
                 case 0.5
                     %plot L2 Norm error against characteristic lenght using log-log plot
-                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','-.','LineWidth',1.3,'color',linecolor{i});
+                    plot(log(h),log(L2N),'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','-.','LineWidth',1.3,'color',linecolor{i});
                 case 1
                     %plot L2 Norm error against characteristic lenght using log-log plot
-                    loglog(h,L2N,'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','--','LineWidth',1.3,'color',linecolor{i});
+                    plot(log(h),log(L2N),'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','--','LineWidth',1.3,'color',linecolor{i});
             end
             hold on
         end
     end
+    set(gca, 'XScale', 'log', 'YScale', 'log'); %use log axis
     grid on %use grid lines
     title(strcat('L2 Norm with basis order=',num2str(order)),'FontSize',14)
     xlabel('ln(h)','FontSize',12);
@@ -92,15 +93,16 @@ for j = [0 1]
         %manual or gaussian quadrature
         switch j
             case 0
-                %plot L2 Norm error against characteristic lenght using log-log plot
-                loglog(h,L2N,'LineWidth',1.3,'color',linecolor);
+                %plot L2 Norm error against characteristic lenght using ln plot
+                plot(log(h),log(L2N),'LineWidth',1.3,'color',linecolor);
             case 1
-                %plot L2 Norm error against characteristic lenght using log-log plot
-                loglog(h,L2N,'--','LineWidth',1.3,'color',linecolor);
+                %plot L2 Norm error against characteristic lenght using ln plot
+                plot(log(h),log(L2N),'--','LineWidth',1.3,'color',linecolor);
         end
         hold on
     end
 end
+set(gca, 'XScale', 'log', 'YScale', 'log'); %use log axis
 grid on %use grid lines
 title('Numerical Methods Convergence','FontSize',14)
 xlabel('ln(h)','FontSize',12);
