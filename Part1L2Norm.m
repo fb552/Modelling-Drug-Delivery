@@ -53,10 +53,10 @@ for order = [1 2]
             %Crank-Nicolson or Backward Euler methods
             switch theta
                 case 0.5
-                    %plot L2 Norm error against characteristic lenght using log-log plot
+                    %plot L2 Norm error against characteristic lenght using ln plot
                     plot(log(h),log(L2N),'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','-.','LineWidth',1.3,'color',linecolor{i});
                 case 1
-                    %plot L2 Norm error against characteristic lenght using log-log plot
+                    %plot L2 Norm error against characteristic lenght using ln plot
                     plot(log(h),log(L2N),'DisplayName',strcat('t=',num2str(time.range)),'LineStyle','--','LineWidth',1.3,'color',linecolor{i});
             end
             hold on
